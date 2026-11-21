@@ -1,0 +1,6 @@
+{
+  "name": "PRIX",
+  "description": "PRIX — Offline-first native Android document scanner, photo-to-PDF maker, PDF viewer, and PDF editor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

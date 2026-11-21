@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PRIX</string>
+    <string name="app_tagline">Scan. Create. Edit. Organize.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_documents">Documents</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_settings">Settings</string>
+    <string name="action_scan_document">Scan Document</string>
+    <string name="action_images_to_pdf">Images to PDF</string>
+    <string name="action_edit_pdf">Edit PDF</string>
+    <string name="action_import_pdf">Import PDF</string>
+    <string name="error_generic_title">Something went wrong</string>
+    <string name="error_camera_permission_denied">Camera access is required to scan physical documents. You can grant camera permission or import photos from your gallery instead.</string>
+    <string name="error_invalid_pdf">This file could not be opened as a valid PDF. It may be corrupted or encrypted.</string>
+    <string name="disclaimer_notice_banner">PRIX processes documents locally on your device. Scanned copies, OCR text, and drawn signatures are productivity outputs and not legally certified originals or cryptographic signatures.</string>
+</resources>

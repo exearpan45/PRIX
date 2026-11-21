@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   PRIX Data Extraction rules (Android 12+).
+   Excludes private vault documents, thumbnails, signatures, and Room database
+   from both cloud backup and implicit device-to-device transfers. Only non-sensitive
+   DataStore UI preferences remain transferable.
+-->
+<data-extraction-rules>
+    <cloud-backup disableIfNoEncryptionCapabilities="true">
+        <exclude domain="file" path="prix_vault" />
+        <exclude domain="file" path="prix_vault/" />
+        <exclude domain="database" path="prix_documents.db" />
+        <exclude domain="database" path="prix_documents.db-wal" />
+        <exclude domain="database" path="prix_documents.db-shm" />
+        <exclude domain="database" path="prix_documents.db-journal" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="prix_vault" />
+        <exclude domain="file" path="prix_vault/" />
+        <exclude domain="database" path="prix_documents.db" />
+        <exclude domain="database" path="prix_documents.db-wal" />
+        <exclude domain="database" path="prix_documents.db-shm" />
+        <exclude domain="database" path="prix_documents.db-journal" />
+    </device-transfer>
+</data-extraction-rules>

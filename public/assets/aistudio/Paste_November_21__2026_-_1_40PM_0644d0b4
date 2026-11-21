@@ -1,0 +1,1033 @@
+# PRIX 3.0
+## Final Stabilization, Security, Performance & Production Readiness
+
+**Product:** PRIX  
+**Tagline:** Scan. Create. Edit. Organize.  
+**Platform:** Native Android  
+**Technology:** Kotlin, Jetpack Compose, Material 3, CameraX, Room, DataStore, WorkManager, Apache PDFBox-Android, Android PdfRenderer and on-device ML Kit OCR.
+
+---
+
+# 1. PROJECT OBJECTIVE
+
+Upgrade the existing PRIX Android Studio project into a reliable, polished, secure and production-ready Android application.
+
+This is a stabilization and quality-improvement project, not a complete rewrite.
+
+The existing Liquid Glass interface, branding, navigation, scanner, PDF editor, PDF toolkit, document management and settings must be preserved.
+
+The developer/AI coding agent must:
+
+1. Inspect the complete existing source code before changing anything.
+2. Identify real bugs, incomplete implementations, unsafe configurations and performance bottlenecks.
+3. Fix confirmed issues.
+4. Test every major feature.
+5. Improve low-end Android device compatibility.
+6. Complete legal and privacy configuration.
+7. Validate the final Gradle build.
+8. Prepare the project for APK generation only after receiving explicit approval.
+
+**IMPORTANT: Do not generate an APK, AAB, signed release, or publish the application during this project.** The user will authorize packaging separately.
+
+# 2. NON-NEGOTIABLE DEVELOPMENT RULES
+
+- Do not replace the existing application with a new template.
+- Do not remove existing working functionality.
+- Do not create fake buttons, fake progress indicators or placeholder tools.
+- Do not claim that a feature works without testing it.
+- Do not silently remove existing dependencies or architecture.
+- Do not add unnecessary cloud services, paid APIs or mandatory accounts.
+- Do not upload user documents, OCR results, signatures or images to external servers.
+- Do not introduce advertisements or analytics without explicit product approval.
+- Do not expose API keys, secrets or signing credentials.
+- Do not make the application dependent on an internet connection for its core functionality.
+- Do not use expensive real-time blur or continuous animations on low-memory devices.
+- Keep all existing user data compatible with database migrations.
+- Never delete user documents during a migration or cleanup operation.
+- Keep a clear record of every change.
+
+# 3. PHASE 1: COMPLETE SOURCE-CODE AUDIT
+
+Before editing, inspect every source file and create a structured audit report.
+
+Inspect:
+
+- AndroidManifest.xml
+- Gradle configuration and version catalog
+- Gradle wrapper
+- MainActivity and application initialization
+- Navigation and deep links
+- Room database, entities, DAO and repositories
+- DataStore preferences
+- Document storage manager
+- Temporary file cleanup worker
+- CameraX scanner and image processor
+- PDF engine and viewer
+- PDF editor and signature components
+- Every PDF tool implementation
+- OCR engine
+- LiquidGlassComponents
+- PrixVisualEffects
+- Theme and color definitions
+- Splash screen and onboarding
+- Settings and legal screens
+- Backup and data extraction rules
+- FileProvider configuration
+- Unit and instrumentation tests
+- ProGuard/R8 configuration
+- Project metadata and README
+
+For every discovered issue, record:
+
+| Field | Requirement |
+|---|---|
+| Issue ID | Unique identifier |
+| File | Exact source file |
+| Severity | Critical, High, Medium, Low |
+| Description | Actual observed problem |
+| Reproduction | How to reproduce |
+| Fix | Proposed solution |
+| Verification | Test that proves the fix |
+
+Do not label an unverified suspicion as a confirmed bug.
+
+# 4. PHASE 2: GRADLE AND PROJECT CONFIGURATION
+
+## 4.1 Restore a reproducible build system
+
+The uploaded project contains Gradle wrapper properties, but the Gradle wrapper launcher and wrapper JAR are absent.
+
+Fix this properly.
+
+Requirements:
+
+- Add a compatible Gradle wrapper.
+- Ensure gradlew and gradlew.bat are included.
+- Ensure gradle-wrapper.jar is present.
+- Verify the configured Gradle distribution works with the Android Gradle Plugin and Kotlin versions.
+- Keep dependency versions compatible.
+- Document the required JDK version.
+- Ensure a clean checkout can build without relying on a developer's globally installed Gradle installation.
+
+Do not blindly upgrade every dependency.
+
+## 4.2 Android identity and metadata
+
+Review and standardize:
+
+- namespace
+- applicationId
+- Kotlin package declarations
+- application class
+- activity declaration
+- FileProvider authority
+- app label
+- versionCode
+- versionName
+- deep-link configuration
+
+The current configuration uses `com.example` as the Gradle namespace, `com.aistudio.prix.xkqmzp` as the application ID and `com.example` packages in the source tree.
+
+Determine whether this is intentional. If changing the namespace or packages, update every reference safely and verify Room, Compose, generated BuildConfig, FileProvider and manifest resolution.
+
+Do not change the application ID without explicit migration planning, because it affects application identity and updates.
+
+## 4.3 Build variants
+
+Maintain:
+
+- Debug variant for development and testing.
+- Release variant for future production packaging.
+
+Check:
+
+- Signing configuration.
+- Release minification.
+- Resource shrinking.
+- ProGuard rules.
+- Dependency compatibility.
+- Debug-only configuration.
+- Secrets plugin configuration.
+
+Never commit real API keys, passwords or keystores.
+
+## 4.4 Metadata consistency
+
+The current metadata declares a server-side Gemini capability, while the application describes itself as offline-first.
+
+Investigate this mismatch.
+
+If the app does not actually use Gemini:
+
+- Remove unused server-side capability declarations.
+- Remove unnecessary secret requirements.
+- Remove unused Google services configuration if safe.
+- Keep the application fully offline.
+
+If a future optional AI feature is actually implemented, document its exact network behavior and require explicit user consent before sharing any content.
+
+# 5. PHASE 3: PRIVACY AND DOCUMENT SECURITY
+
+This is a critical phase.
+
+## 5.1 Backup configuration
+
+The current manifest enables:
+
+`android:allowBackup="true"`
+
+The current backup rule files contain sample or incomplete configuration.
+
+Inspect the actual storage implementation and classify every data location:
+
+- Private documents.
+- Original scans.
+- Exported PDFs.
+- Temporary files.
+- Signatures.
+- OCR text.
+- Database files.
+- User preferences.
+- Cache and thumbnails.
+
+Define the backup policy explicitly.
+
+Default product requirement:
+
+- Private document vault must not enter cloud backup.
+- Temporary files must not enter backup.
+- Sensitive signatures must not enter cloud backup.
+- Document databases containing sensitive content must not be backed up without explicit product approval.
+- Preferences can be backed up only if they do not contain sensitive information.
+- Device-to-device transfer behavior must be documented separately.
+
+Implement the appropriate Android backup and data extraction rules for supported Android versions.
+
+Verify behavior on API 30 and API 31+.
+
+Do not assume that an empty backup rule file excludes everything.
+
+## 5.2 App-private vault
+
+Verify:
+
+- Files are stored in the correct app-private location.
+- No unnecessary external storage permission is requested.
+- File names are safely handled.
+- Temporary files are removed only when safe.
+- Exported files are not accidentally deleted.
+- FileProvider exposes only required paths.
+- URI permissions are granted only to intended recipients.
+- Imported files are validated before processing.
+- Malformed documents cannot crash the application.
+
+If encryption is implemented or proposed, use Android Keystore-backed key management and established cryptographic libraries. Do not invent custom encryption.
+
+Never claim that the vault is encrypted unless encryption is actually implemented and tested.
+
+## 5.3 Camera and file permissions
+
+Keep permissions minimal.
+
+Camera permission should be requested only when the scanner is opened.
+
+Use:
+
+- Android Photo Picker for image selection.
+- Storage Access Framework for document selection and export.
+- Temporary URI grants where appropriate.
+
+Handle:
+
+- Permission denied.
+- Permission permanently denied.
+- Camera unavailable.
+- Camera hardware unavailable.
+- Selected file no longer accessible.
+- URI permission revoked.
+- Insufficient storage.
+
+## 5.4 Data deletion
+
+Implement reliable deletion behavior.
+
+When the user deletes a document:
+
+- Remove its database record.
+- Remove associated stored files.
+- Remove related thumbnails and temporary derivatives.
+- Handle deletion failures without leaving misleading UI.
+- Protect against deleting files outside the app-owned directory.
+
+Provide a confirmation for destructive batch operations.
+
+# 6. PHASE 4: PRIVACY POLICY AND LEGAL COMPLETION
+
+The current Privacy Policy contains publisher and contact placeholders.
+
+Replace every placeholder with verified owner-provided information.
+
+Required information:
+
+- Publisher or app owner name.
+- Privacy contact email.
+- Support email.
+- Effective date.
+- Applicable country or jurisdiction.
+- Business address only if legally required for the intended distribution channel.
+
+Never invent these details.
+
+Until supplied, maintain a clearly documented release-blocking checklist.
+
+## 6.1 Privacy policy verification
+
+The policy must accurately describe:
+
+- On-device processing.
+- OCR behavior.
+- Camera permission.
+- Photo Picker and SAF.
+- Local document storage.
+- Backup behavior.
+- Third-party libraries.
+- Network requests.
+- Data retention.
+- Data deletion.
+- User contact options.
+
+The policy must reflect actual application behavior, not aspirational claims.
+
+If any SDK or library sends information externally, disclose that accurately.
+
+## 6.2 Additional legal pages
+
+Review and complete:
+
+- Privacy Policy.
+- Terms and Conditions.
+- Disclaimer.
+- About PRIX.
+- Contact and Support.
+
+Include a clear disclaimer that drawn signatures are visual document marks and are not automatically cryptographic digital certificates.
+
+Explain that PDF text overlays do not necessarily modify the original embedded PDF text.
+
+Do not claim legal compliance without proper verification.
+
+# 7. PHASE 5: LIQUID GLASS UI REFINEMENT
+
+Preserve the existing PRIX 2.0 Liquid Glass visual identity.
+
+Do not redesign the entire application.
+
+Improve consistency and usability.
+
+## 7.1 Design principles
+
+- Premium, clean and modern.
+- Apple-inspired translucent surfaces.
+- Beautiful but restrained gradients.
+- Consistent spacing and rounded corners.
+- Clear visual hierarchy.
+- Smooth transitions.
+- Excellent text readability.
+- Proper dark and light modes.
+
+## 7.2 Glass components
+
+Review and standardize reusable components:
+
+- GlassCard.
+- GlassButton.
+- GlassNavigationBar.
+- GlassDialog.
+- GlassBottomSheet.
+- GlassSearchBar.
+- GlassToolbar.
+- GlassToggle.
+- GlassProgressIndicator.
+- GlassIconButton.
+
+Every component must support dark and light themes.
+
+Glass surfaces must retain adequate contrast.
+
+Avoid stacking multiple expensive blur layers.
+
+## 7.3 Navigation
+
+Preserve the existing four-tab navigation:
+
+- Home.
+- Documents.
+- Tools.
+- Settings.
+
+Verify:
+
+- Correct selected-tab state.
+- Back navigation.
+- Deep-link navigation.
+- State restoration.
+- Scroll position restoration where appropriate.
+- Correct handling of nested screens.
+- Tablet navigation behavior.
+
+Navigation must never open duplicate or incorrect destinations.
+
+## 7.4 Animation improvements
+
+Use Compose-native animation APIs.
+
+Improve:
+
+- Screen transitions.
+- Tab selection.
+- Card interactions.
+- Dialog entry and exit.
+- Bottom sheet transitions.
+- Button feedback.
+- Document selection.
+- Scanner state changes.
+- Progress transitions.
+
+Use short, intentional motion.
+
+Requirements:
+
+- No endless idle animation.
+- No unnecessary recomposition.
+- No animation that blocks important actions.
+- No layout jumps.
+- No excessive spring bounce.
+- Respect the Android system animation scale.
+- Respect the in-app reduced-motion setting.
+
+# 8. PHASE 6: LOW-END DEVICE PERFORMANCE
+
+Target real-world compatibility with entry-level Android phones.
+
+The app must remain usable on devices with:
+
+- 2 GB RAM.
+- 3 GB RAM.
+- 4 GB RAM.
+- Older supported Android versions.
+
+The current project already contains a low-RAM detection approach. Audit it and verify that the behavior actually changes expensive rendering and animation work.
+
+## 8.1 Adaptive performance
+
+Create three internal performance profiles:
+
+**Low**
+- Disable expensive blur.
+- Use simple translucent colors.
+- Disable decorative background effects.
+- Use short or reduced animations.
+- Reduce image decoding size.
+- Keep PDF page rendering conservative.
+
+**Balanced**
+- Moderate glass effects.
+- Standard transitions.
+- Normal thumbnail generation.
+- Controlled PDF rendering.
+
+**High**
+- Richer visual effects when supported.
+- Higher-quality previews.
+- Normal animation behavior.
+
+Select the profile automatically based on device capability.
+
+Allow users to select a lower-performance mode in Settings if useful.
+
+Do not promise that every device supports every effect.
+
+## 8.2 Memory management
+
+Implement and verify:
+
+- Bitmap recycling or release where appropriate.
+- Bounded image caches.
+- Bounded PDF page caches.
+- Lazy rendering.
+- Thumbnail downsampling.
+- Lifecycle-aware work.
+- Cancellation of abandoned jobs.
+- Background processing for large operations.
+- No unnecessary main-thread disk I/O.
+
+Avoid loading an entire large PDF into memory.
+
+## 8.3 Smooth scrolling
+
+Check all screens for:
+
+- Excessive recompositions.
+- Unstable list keys.
+- Large images decoded at full resolution.
+- Heavy synchronous sorting.
+- Repeated database queries.
+- Expensive blur in scrolling lists.
+- Unnecessary state collection.
+- Long-running work on the main thread.
+
+Use LazyColumn and LazyVerticalGrid appropriately.
+
+# 9. PHASE 7: DOCUMENT SCANNER
+
+Audit the complete CameraX implementation.
+
+Required features:
+
+- Camera preview.
+- Camera permission handling.
+- Flash toggle.
+- Front/rear camera selection where supported.
+- Image capture.
+- Automatic edge detection.
+- Manual corner adjustment.
+- Perspective correction.
+- Rotation.
+- Image enhancement.
+- Multi-page capture.
+- Preview and delete.
+- Reorder captured pages.
+- Export to PDF.
+
+Verify:
+
+- Camera lifecycle binding and unbinding.
+- Screen rotation.
+- App background and foreground.
+- Camera interruption.
+- Capture cancellation.
+- Image processing failures.
+- Large image handling.
+- Low-storage behavior.
+
+Image processing must not freeze the UI.
+
+The app must provide manual crop controls when automatic edge detection fails.
+
+Do not claim automatic scanning is perfect.
+
+# 10. PHASE 8: IMAGE-TO-PDF
+
+Preserve the existing image-to-PDF workspace.
+
+Verify:
+
+- Multi-image selection.
+- Image preview.
+- Reordering.
+- Rotation.
+- A4, A3, Letter, Legal and Original page sizes.
+- Portrait and landscape.
+- Margins.
+- Background options.
+- Fit-to-page and aspect-ratio behavior.
+- Quality selection.
+- PDF export.
+
+Validate that:
+
+- Every selected image appears.
+- The selected order is preserved.
+- Orientation is correct.
+- Images are not unintentionally stretched.
+- Large inputs do not exhaust memory.
+- Exported PDFs open in external PDF viewers.
+
+Provide accurate progress and cancellation behavior.
+
+# 11. PHASE 9: PDF VIEWER
+
+Verify:
+
+- Opening PDFs from PRIX.
+- Opening PDFs from external file managers.
+- ACTION_VIEW content URI handling.
+- Page navigation.
+- Zoom.
+- Fit-to-width and fit-to-page.
+- Thumbnails.
+- Page rotation.
+- Text search.
+- OCR where required.
+- Print.
+- Share.
+- SAF export.
+
+Check password-protected PDFs and corrupted PDFs.
+
+Display clear messages when a document cannot be opened.
+
+Never crash because a PDF is unusually large or malformed.
+
+PDF rendering must use bounded memory and release resources correctly.
+
+# 12. PHASE 10: PDF EDITOR
+
+Audit every editing operation.
+
+Required tools:
+
+- Freehand pen.
+- Highlighter.
+- Eraser.
+- Text overlay.
+- Shapes.
+- Image overlays.
+- Drawn signatures.
+- Saved signatures.
+- Page rotation.
+- Page duplication.
+- Page deletion.
+- Undo.
+- Redo.
+- Save a copy.
+- Explicit overwrite where supported.
+
+Verify:
+
+- Correct page coordinates.
+- Correct scaling at different zoom levels.
+- Correct overlay positioning.
+- Correct page rotation.
+- Correct export.
+- Undo and redo consistency.
+- No accidental modification of original files.
+- Correct handling of multi-page PDFs.
+
+The editor must not silently overwrite the original.
+
+Use clear save and export choices.
+
+# 13. PHASE 11: PDF TOOLKIT
+
+Test every existing tool independently.
+
+## Document operations
+
+- Merge PDF.
+- Split PDF.
+- Compress PDF.
+- Rotate pages.
+- Reorder pages.
+- Delete pages.
+- Extract pages.
+- Duplicate PDF.
+- Repair PDF.
+- PDF information and metadata.
+
+## Conversion operations
+
+- PDF to PNG.
+- PDF to JPEG.
+- PDF to WebP.
+- OCR text extraction.
+- Image Toolkit.
+
+## Enhancement operations
+
+- Watermark.
+- Page numbers.
+- Password protection.
+- Password removal when authorized and supported.
+- Print.
+- Export.
+
+For every operation:
+
+1. Validate input.
+2. Show the selected file.
+3. Validate user settings.
+4. Run work off the main thread.
+5. Show truthful progress.
+6. Support cancellation where safe.
+7. Save output to a clear destination.
+8. Verify that the output can be opened.
+9. Report the result and file size.
+10. Handle failures without losing the source document.
+
+## Compression requirements
+
+Compression must show actual before-and-after sizes.
+
+Never promise a specific reduction.
+
+If the output becomes larger, report that honestly.
+
+## Password requirements
+
+Use established PDF encryption functionality.
+
+Never store PDF passwords in plain-text preferences or logs.
+
+Do not claim to bypass PDF security. Password removal must require the appropriate authorization and supported input access.
+
+## Repair requirements
+
+PDF repair must be best-effort.
+
+Preserve the original file.
+
+Clearly report when a document cannot be recovered.
+
+# 14. PHASE 12: OCR
+
+The current README documents Latin-script ML Kit OCR.
+
+Preserve this limitation unless additional language support is deliberately implemented.
+
+Verify:
+
+- Image OCR.
+- PDF page OCR.
+- Rotation handling.
+- Empty OCR results.
+- Large documents.
+- OCR failure recovery.
+- Copy and export extracted text.
+- Search integration.
+
+OCR must remain on-device as described in the privacy policy.
+
+Do not silently introduce cloud OCR.
+
+Clearly explain supported languages.
+
+# 15. PHASE 13: DOCUMENT MANAGEMENT
+
+Verify:
+
+- Room database.
+- Folder creation.
+- Subfolders.
+- Document listing.
+- Search.
+- Sorting.
+- Grid and list views.
+- Favorites.
+- Multi-select.
+- Batch deletion.
+- Batch sharing.
+- Document renaming.
+- Document movement.
+- Duplicate handling.
+
+Test:
+
+- Empty database.
+- Large document collections.
+- Missing underlying files.
+- Database migration.
+- Duplicate names.
+- Interrupted operations.
+
+Search must not freeze the UI.
+
+The database must never contain misleading references to deleted files.
+
+# 16. PHASE 14: WORKMANAGER AND TEMPORARY FILE CLEANUP
+
+Inspect the cleanup worker.
+
+Requirements:
+
+- Delete only expired application-owned temporary files.
+- Never delete user documents.
+- Never delete exported files.
+- Avoid racing with active processing jobs.
+- Handle locked or inaccessible files.
+- Log safe diagnostic information without sensitive content.
+- Work correctly after app restarts.
+
+Test cleanup with both active and expired temporary files.
+
+# 17. PHASE 15: ERROR HANDLING
+
+Create a consistent error-handling system.
+
+Every user-facing failure must explain:
+
+1. What happened.
+2. Which operation failed.
+3. Whether the original file remains safe.
+4. What the user can do next.
+
+Handle:
+
+- Insufficient storage.
+- Permission denial.
+- Corrupted PDFs.
+- Invalid images.
+- Unsupported file formats.
+- Camera unavailable.
+- Memory pressure.
+- Export failure.
+- Sharing failure.
+- Database errors.
+- Interrupted background jobs.
+- Missing files.
+- Password errors.
+
+Do not display raw stack traces to users.
+
+Keep detailed technical logs in development builds only, with sensitive content excluded.
+
+# 18. PHASE 16: ACCESSIBILITY
+
+Verify:
+
+- Minimum 48dp touch targets.
+- Content descriptions.
+- Screen reader support.
+- Adequate text contrast.
+- Scalable text.
+- Reduced motion.
+- Keyboard navigation where applicable.
+- Clear focus states.
+- Accessible dialogs.
+- Meaningful progress announcements.
+
+The Liquid Glass design must not reduce accessibility.
+
+# 19. PHASE 17: TESTING STRATEGY
+
+Create real tests, not just tests that confirm the application launches.
+
+## Unit tests
+
+Test:
+
+- PDF operation logic.
+- Page selection and ordering.
+- File validation.
+- Image transformation logic.
+- Repository behavior.
+- Search and sorting.
+- Database operations.
+- Preferences.
+- Cleanup logic.
+- Error mapping.
+
+## Integration tests
+
+Test:
+
+- Room persistence.
+- Import and export.
+- FileProvider.
+- SAF.
+- Document deletion.
+- PDF generation and reopening.
+- Navigation and deep links.
+- WorkManager cleanup.
+
+## UI tests
+
+Test:
+
+- First launch.
+- Onboarding.
+- Home navigation.
+- Scanner entry.
+- Image-to-PDF workflow.
+- PDF viewing.
+- PDF editing.
+- Tool workflows.
+- Settings.
+- Legal pages.
+- Dark mode.
+- Light mode.
+- Reduced motion.
+
+## Real-device tests
+
+Test on available devices or emulators across:
+
+- API 24 minimum compatibility.
+- API 29 or 30.
+- API 31+ backup behavior.
+- A recent Android release.
+- Low-memory device profile.
+
+If no emulator or physical device is available, explicitly mark hardware tests as NOT TESTED.
+
+Never convert a skipped test into a passing test.
+
+# 20. PHASE 18: BUILD AND STATIC QUALITY
+
+Run the following after code changes:
+
+- Gradle configuration validation.
+- Kotlin compilation.
+- Unit tests.
+- Lint.
+- Instrumentation tests where available.
+- Dependency verification.
+- Manifest inspection.
+- Resource inspection.
+- Release configuration validation.
+
+Required command sequence:
+
+`gradle :app:compileDebugKotlin`
+
+`gradle :app:testDebugUnitTest`
+
+`gradle :app:lintDebug`
+
+Then, if the environment supports it, run the relevant instrumentation tests.
+
+Fix all errors.
+
+Review every warning and either resolve it or document why it is safe to retain.
+
+Do not hide warnings by disabling lint checks globally.
+
+Do not claim that a successful Kotlin compile proves all features work.
+
+# 21. PHASE 19: PERFORMANCE AND QUALITY ACCEPTANCE
+
+The final app must meet these quality goals:
+
+- No known reproducible crash in tested workflows.
+- No blocking main-thread file operations.
+- No unbounded PDF rendering cache.
+- No uncontrolled bitmap allocations.
+- No continuous idle animation.
+- No accidental document overwrite.
+- No accidental deletion of user files.
+- No unapproved network transfer of documents.
+- No fake progress indicators.
+- No broken navigation.
+- No missing legal placeholders in a release candidate.
+- No unexplained critical or high-severity audit findings.
+
+Measure performance on actual hardware when available.
+
+Record launch time, screen transition behavior, memory use and PDF processing behavior.
+
+Do not invent benchmark numbers.
+
+# 22. PHASE 20: FINAL REPORT
+
+After implementation, produce a detailed report containing:
+
+## A. Issues discovered
+
+| Issue | Severity | File | Status |
+|---|---|---|---|
+
+## B. Changes implemented
+
+List every modified file and explain the change.
+
+## C. Tests
+
+| Test | Result | Evidence |
+|---|---|---|
+| Kotlin compilation | Pass/Fail/Not run | Build output |
+| Unit tests | Pass/Fail/Not run | Test report |
+| Lint | Pass/Fail/Not run | Lint report |
+| Instrumentation | Pass/Fail/Not run | Test report |
+| Real-device tests | Pass/Fail/Not tested | Device details |
+
+## D. Remaining blockers
+
+List all unresolved issues and all information still required from the app owner.
+
+## E. Build readiness
+
+Choose exactly one:
+
+- Not build-ready.
+- Build-ready for debug testing.
+- Build-ready for release review.
+
+Do not call the application production-ready merely because compilation succeeds.
+
+# 23. OWNER-DEPENDENT INFORMATION
+
+Do not invent the following:
+
+- App owner/publisher name.
+- Privacy contact email.
+- Support email.
+- Effective date.
+- Legal jurisdiction.
+- Required publisher address.
+- Final application identity if it needs changing.
+
+Create a concise list of missing owner inputs.
+
+Keep release-blocking placeholders visible until the owner supplies verified information.
+
+# 24. FINAL PROJECT DELIVERY
+
+Return the complete updated Android Studio project.
+
+Preserve:
+
+- Existing project structure where practical.
+- All working features.
+- Existing user data compatibility.
+- Liquid Glass design.
+- Documentation.
+- Tests.
+- Gradle wrapper.
+- Correct configuration.
+
+Provide:
+
+1. Updated project ZIP.
+2. Detailed audit report.
+3. Modified file list.
+4. Test report.
+5. Remaining blocker list.
+6. Exact instructions for opening the project in Android Studio.
+
+**DO NOT GENERATE APK OR AAB.**
+
+Stop after the source-code stabilization and verification phase.
+
+Wait for explicit owner approval before running the APK packaging process.
+
+---
+
+# DEFINITION OF DONE
+
+PRIX 3.0 is complete only when:
+
+- [ ] Full source audit is completed.
+- [ ] All confirmed critical and high-severity issues are fixed.
+- [ ] Gradle wrapper is complete and reproducible.
+- [ ] Application identity and metadata are consistent.
+- [ ] Backup rules are explicitly configured and tested.
+- [ ] Private document storage is verified.
+- [ ] Privacy policy accurately matches application behavior.
+- [ ] Owner-dependent legal placeholders are identified.
+- [ ] Liquid Glass UI remains intact.
+- [ ] Low-memory adaptations are verified.
+- [ ] Scanner workflow is tested.
+- [ ] Image-to-PDF workflow is tested.
+- [ ] PDF viewer is tested.
+- [ ] PDF editor is tested.
+- [ ] Every PDF tool is tested.
+- [ ] OCR behavior is tested.
+- [ ] Document management is tested.
+- [ ] Error handling is consistent.
+- [ ] Accessibility checks are completed.
+- [ ] Unit tests and lint are run.
+- [ ] Hardware tests are honestly reported.
+- [ ] Updated project ZIP is delivered.
+- [ ] No APK or AAB is generated.
+
+**FINAL INSTRUCTION: Quality and correctness take priority over speed. Do not rewrite working features just to make the code look different. Inspect, reproduce, fix, test, document and deliver.**
